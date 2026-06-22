@@ -13,19 +13,22 @@ const config = require('./config');
 const userRoutes = require('./routes/user.route');
 const companyRoutes = require('./routes/company.route');
 const reviewRoutes = require('./routes/review.route');
-const cors = require("cors");
+const cors = require('cors');
 const app = express();
-const { port, db } = config;
+const { port, db, cors: corsConfig } = config;
 
-app.use(
-    cors({
-      origin: process.env.CORS_ORIGINS,
-      // origin: ["http://localhost:3000"],
-      credentials: true,
-      methods: ["GET", "POST", "PATCH", "DELETE"], // Allow specific HTTP methods
-      allowedHeaders: ["Accept", "Content-Type", "Authorization"], // Allow specific headers
-    })
-  );
+app.use(cors({
+    origin(origin, callback) {
+        if (!origin || corsConfig.origins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Origin ${origin} not allowed by CORS`));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
+}));
 
 app.use(express.json());
 
