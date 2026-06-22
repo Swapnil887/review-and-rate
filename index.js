@@ -17,11 +17,14 @@ const cors = require("cors");
 const app = express();
 const { port, db } = config;
 
+
+
 app.use(
     cors({
       origin: [
         "http://localhost:3001",
-        "https://review-and-rate-fe-git-main-swapnil887s-projects.vercel.app"
+        "https://review-and-rate-fe-git-main-swapnil887s-projects.vercel.app",
+        "https://review-and-rate-fe.vercel.app"
       ],
       // origin: ["http://localhost:3000"],
       credentials: true,
