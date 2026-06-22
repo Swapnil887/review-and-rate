@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:3000
+@accessToken = {{login.response.body.accessToken}}
+@refreshToken = {{login.response.body.refreshToken}}
+@companyId = {{createCompany.response.body.company._id}}
+@reviewId = {{createReview.response.body.review._id}}
+
+### Health Check
+GET {{baseUrl}}/
+
+### Signup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### Create Company
+# @name createCompany
+POST {{baseUrl}}/api/companies
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "TechNova Solutions",
+  "location": "Silicon Valley",
+  "city": "San Francisco",
+  "foundedOn": "2015-06-15",
+  "logo": "https://example.com/logo.png",
+  "description": "A leading software development company."
+}
+
+### Get All Companies
+GET {{baseUrl}}/api/companies
+
+### Search Companies
+GET {{baseUrl}}/api/companies?search=TechNova
+
+### Filter Companies
+GET {{baseUrl}}/api/companies?city=San Francisco&location=Silicon Valley
+
+### Get Company By Id
+GET {{baseUrl}}/api/companies/{{companyId}}
+
+### Add Review
+# @name createReview
+POST {{baseUrl}}/api/companies/{{companyId}}/reviews
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "reviewerName": "John Doe",
+  "subject": "Great workplace culture",
+  "reviewText": "Excellent team, strong leadership, and meaningful projects.",
+  "rating": 5
+}
+
+### Get Reviews (by date)
+GET {{baseUrl}}/api/companies/{{companyId}}/reviews?sortBy=date&order=desc
+
+### Get Reviews (by rating)
+GET {{baseUrl}}/api/companies/{{companyId}}/reviews?sortBy=rating&order=desc
+
+### Get Reviews (by relevance)
+GET {{baseUrl}}/api/companies/{{companyId}}/reviews?sortBy=relevance&order=desc
+
+### Update Review
+PUT {{baseUrl}}/api/companies/{{companyId}}/reviews/{{reviewId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "reviewerName": "John Doe",
+  "subject": "Updated subject",
+  "reviewText": "Updated review text.",
+  "rating": 4
+}
+
+### Like Review
+POST {{baseUrl}}/api/companies/{{companyId}}/reviews/{{reviewId}}/like
+Authorization: Bearer {{accessToken}}
+
+### Share Review
+POST {{baseUrl}}/api/companies/{{companyId}}/reviews/{{reviewId}}/share
+
+### Delete Review
+DELETE {{baseUrl}}/api/companies/{{companyId}}/reviews/{{reviewId}}
+Authorization: Bearer {{accessToken}}
+
+### Logout
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{accessToken}}
