@@ -14,10 +14,15 @@ const companyRoutes = require('./routes/company.route');
 const reviewRoutes = require('./routes/review.route');
 
 const app = express();
-const { port, db } = config;
+const { port, db, cors } = config;
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    const origin = req.headers.origin;
+
+    if (origin && cors.origins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    }
+
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     if (req.method === 'OPTIONS') {
