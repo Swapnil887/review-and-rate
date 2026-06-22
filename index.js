@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+
 // Development only: use public DNS so mongodb+srv SRV lookup works
 if (process.env.NODE_ENV !== 'production') {
     const dns = require('dns');
@@ -12,24 +13,19 @@ const config = require('./config');
 const userRoutes = require('./routes/user.route');
 const companyRoutes = require('./routes/company.route');
 const reviewRoutes = require('./routes/review.route');
-
+const cors = require("cors");
 const app = express();
-const { port, db, cors } = config;
+const { port, db } = config;
 
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-
-    if (origin && cors.origins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
+app.use(
+    cors({
+      origin: process.env.CORS_ORIGINS,
+      // origin: ["http://localhost:3000"],
+      credentials: true,
+      methods: ["GET", "POST", "PATCH", "DELETE"], // Allow specific HTTP methods
+      allowedHeaders: ["Accept", "Content-Type", "Authorization"], // Allow specific headers
+    })
+  );
 
 app.use(express.json());
 

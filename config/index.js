@@ -13,10 +13,5 @@ module.exports = {
         secret: process.env.JWT_SECRET,
         accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '1h',
         refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
-    },
-    cors: {
-        origins: process.env.CORS_ORIGINS
-            ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim()).filter(Boolean)
-            : defaultCorsOrigins,
-    },
+    }
 };
