@@ -30,10 +30,8 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'Review & Rate API',
-        database: mongoose.connection.name,
-        mongo: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    });
+        message: 'welcome to Review & Rate API',
+        });
 });
 
 app.use('/api/auth', userRoutes);
